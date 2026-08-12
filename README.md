@@ -26,10 +26,13 @@ Starterkit Flutter berbasis Material 3 untuk menjadi fondasi aplikasi mobile. Pr
 - Tema Material 3 untuk light mode dan dark mode.
 - Preferensi tema disimpan secara aman di perangkat.
 - Tombol penggantian tema pada halaman Main Navigation.
+- Bottom navigation Material 3 untuk route Home dan Account.
 - Routing deklaratif menggunakan GoRouter.
-- Splash screen yang mengarahkan pengguna ke `/home`.
+- Splash screen animatif yang mengarahkan pengguna ke `/home`.
 - Overlay offline ketika perangkat tidak terhubung ke jaringan.
 - Pemeriksaan keamanan perangkat untuk mock location, root/jailbreak, developer mode, dan penyimpanan eksternal sesuai platform.
+- API client berbasis Dio dengan token Bearer, header perangkat, multipart upload, download file, dan pemetaan error HTTP.
+- Identitas perangkat yang persisten untuk kebutuhan request API.
 - Layanan secure storage untuk string dan object JSON.
 - Layanan logging dan observer BLoC.
 - Dukungan Android, iOS, web, Windows, macOS, dan Linux dari struktur Flutter standar.
@@ -70,9 +73,14 @@ Starterkit Flutter berbasis Material 3 untuk menjadi fondasi aplikasi mobile. Pr
 │   │   ├── base/
 │   │   │   └── base_cubit.dart      # Base Cubit dengan safe emit
 │   │   ├── models/
+│   │   │   ├── device_info/         # Model metadata perangkat
 │   │   │   └── safe_device/         # Model hasil pemeriksaan perangkat
+│   │   ├── network/
+│   │   │   ├── api_client.dart       # Client Dio dan interceptor API
+│   │   │   └── api_exception.dart    # Exception API terstruktur
 │   │   ├── services/
 │   │   │   ├── connectivity/        # Status konektivitas perangkat
+│   │   │   ├── device/              # Pengambilan dan penyimpanan device info
 │   │   │   ├── logger/              # Layanan logging
 │   │   │   ├── safe_device/         # Pemeriksaan keamanan perangkat
 │   │   │   └── storage/             # Secure storage dan key tersimpan
@@ -85,7 +93,7 @@ Starterkit Flutter berbasis Material 3 untuk menjadi fondasi aplikasi mobile. Pr
 │       ├── login/                   # Login page/screen
 │       ├── signup/                  # Sign-up page/screen
 │       ├── maintenance/             # Maintenance page/screen
-│       └── main_navigation/         # Shell navigation dan pengubah tema
+│       └── main_navigation/         # Shell, bottom navigation, dan pengubah tema
 ├── pubspec.yaml                     # Dependency dan konfigurasi Flutter
 └── analysis_options.yaml             # Aturan static analysis/lint
 ```
@@ -100,6 +108,7 @@ main()
     → WidgetsFlutterBinding.ensureInitialized()
     → memuat env/.env.dev (atau nilai --dart-define ENV)
     → initDependencies()
+    → mengambil preferensi tema dari secure storage
     → MultiBlocProvider
     → App
       → MaterialApp.router
@@ -114,11 +123,12 @@ main()
 
 | Nama route | Path | Halaman | Keterangan |
 | --- | --- | --- | --- |
-| `splash` | `/` | `SplashPage` | Route awal; setelah sekitar 3 detik menuju home. |
+| `splash` | `/` | `SplashPage` | Route awal; setelah sekitar 2 detik menuju home. |
 | `maintenance` | `/maintenance` | `MaintenancePage` | Halaman pemeliharaan. |
 | `login` | `/login` | `LoginPage` | Halaman login. |
 | `signup` | `/login/signup` | `SignupPage` | Child route dari login. |
 | `home` | `/home` | Scaffold Home | Berjalan di dalam `ShellRoute` Main Navigation. |
+| `account` | `/account` | Scaffold Account | Berjalan di dalam `ShellRoute` Main Navigation. |
 
 Untuk menambah route utama yang menggunakan shell navigation, tambahkan `GoRoute` pada daftar `routes` milik `ShellRoute` di `lib/app/routes/app_router.dart`.
 
@@ -128,7 +138,7 @@ Tema dikelola oleh `ThemeCubit` dan dipasang pada `MaterialApp.router` melalui `
 
 - Tema awal adalah light mode jika belum ada preferensi tersimpan.
 - Nilai `light` atau `dark` disimpan memakai `FlutterSecureStorage` dengan key `theme_mode`.
-- `ThemeCubit.initialize()` memulihkan pilihan pengguna saat aplikasi dibuka.
+- Tema tersimpan dibaca sebelum `runApp`, lalu diberikan sebagai `initialTheme` ke `ThemeCubit`.
 - `ThemeCubit.toggleTheme()` digunakan oleh tombol pada `MainNavigationScreen`.
 - Kedua tema menggunakan Material 3, font family `OpenSans`, seed color hijau tua `#0F4C4A`, serta card/dialog/bottom sheet tanpa surface tint.
 
@@ -151,6 +161,7 @@ Provider global dibuat di `AppProviders`:
 - `ThemeCubit`: memuat dan mengubah preferensi tema.
 - `ConnectivityBloc`: memantau konektivitas dan menampilkan `ConnectivityScreen` sebagai overlay saat offline.
 - `SecurityCubit`: menjalankan pemeriksaan perangkat saat startup.
+- `MainNavigationCubit`: menyimpan index tujuan bottom navigation.
 
 `ConnectivityPage` dan `SecurityPage` membungkus seluruh router dari `App`, sehingga perilaku koneksi dan keamanan dapat diterapkan secara global.
 
@@ -207,6 +218,31 @@ Key yang tersedia saat ini:
 | `auth_member` | Data member/auth pengguna. |
 | `auth_token` | Token autentikasi. |
 | `theme_mode` | Preferensi `light` atau `dark`. |
+| `device_id` | UUID perangkat yang dibuat sekali dan digunakan kembali. |
+
+## API client dan device info
+
+`ApiClient` adalah wrapper Dio yang memakai `AppConfig.baseUrl` sebagai base URL. Ia menyediakan method berikut:
+
+- `getForm`, `postForm`, `putForm`, dan `deleteForm` untuk request JSON/form.
+- `postMultipart` untuk pengiriman `FormData`.
+- `downloadFile` untuk mengunduh file ke lokasi yang diberikan.
+- Parameter `authRequired` pada setiap request; bila aktif dan token tersedia, interceptor menambahkan header `Authorization: Bearer <token>`.
+
+Interceptor juga menambahkan metadata perangkat pada setiap request:
+
+```text
+X-Device-Id
+X-Platform
+X-App-Version
+X-Build-Number
+X-OS-Version
+X-Device-Model
+```
+
+`DeviceService` membentuk `DeviceInfoModel` dari `device_info_plus` dan `package_info_plus`. Device ID dibuat sebagai UUID dengan prefix `StarterApp-`, kemudian disimpan dengan key `device_id` sehingga tetap konsisten antar sesi.
+
+Respons non-2xx dipetakan menjadi `BadRequestException` (400), `UnauthorizedException` (401), `ForbiddenException` (403), `NotFoundException` (404), `ServerException` (500), atau `ApiException`. Timeout, koneksi gagal, pembatalan request, dan error jaringan juga dipetakan ke `ApiException` yang mudah ditangani feature layer.
 
 ## Menjalankan proyek
 
@@ -268,6 +304,7 @@ Tema sudah menggunakan `fontFamily: OpenSans`. Agar font diterapkan dengan benar
 ## Konvensi pengembangan
 
 - Daftarkan service singleton atau factory baru di `lib/app/di/injection.dart`.
+- Akses dependency yang sudah terdaftar melalui `sl<T>()`; `ApiClient` sudah memperoleh token dan `DeviceService` melalui DI.
 - Daftarkan BLoC/Cubit yang harus tersedia secara global di `lib/app/providers/app_providers.dart`.
 - Tambahkan route melalui `lib/app/routes/app_router.dart` dan simpan konstanta nama route di `AppRouteName`.
 - Simpan token UI bersama dalam `app/themes`.
@@ -283,4 +320,4 @@ Dependency lengkap serta versinya ada di [`pubspec.yaml`](pubspec.yaml). Depende
 - Delegasi lokalisasi Material/Cupertino sudah disiapkan sebagai komentar di `App`, tetapi belum diaktifkan.
 - `debugShowCheckedModeBanner` mengikuti nilai `ENABLE_LOG`; gunakan `false` pada environment rilis.
 - `debugLogDiagnostics` GoRouter aktif. Pertimbangkan menonaktifkannya pada production.
-- Halaman Login, Sign Up, Maintenance, dan Home saat ini masih berupa placeholder dasar untuk dikembangkan lebih lanjut.
+- Halaman Login, Sign Up, Maintenance, Home, dan Account saat ini masih berupa placeholder dasar untuk dikembangkan lebih lanjut.
