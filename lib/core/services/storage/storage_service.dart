@@ -9,6 +9,7 @@ class StorageKeys {
   static const String member = 'auth_member';
   static const String token = 'auth_token';
   static const String themeMode = 'theme_mode';
+  static const String deviceId = 'device_id';
 }
 
 class StorageService {

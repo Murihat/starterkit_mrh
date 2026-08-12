@@ -15,6 +15,9 @@ class AppRouteName {
   static const login = 'login';
   static const signup = 'signup';
   static const maintenance = 'maintenance';
+
+  static const home = 'home';
+  static const account = 'account';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -50,9 +53,15 @@ final GoRouter appRouter = GoRouter(
       builder: (_, __, child) => MainNavigationPage(child: child),
       routes: [
         GoRoute(
-          name: 'home',
-          path: '/home',
+          name: AppRouteName.home,
+          path: '/${AppRouteName.home}',
           builder: (_, __) => const Scaffold(body: Center(child: Text('Home'))),
+        ),
+        GoRoute(
+          name: AppRouteName.account,
+          path: '/${AppRouteName.account}',
+          builder: (_, __) =>
+              const Scaffold(body: Center(child: Text('Account'))),
         ),
         // ...HomeRoutes.routes,
         // ...BrandRoutes.routes,
