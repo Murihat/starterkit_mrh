@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../services/connectivity/connectivity_service.dart';
-import '../../../../services/logger/logger_service.dart';
+import '../../services/connectivity/connectivity_service.dart';
+import '../../services/logger/logger_service.dart';
 
 part 'connectivity_event.dart';
 part 'connectivity_state.dart';

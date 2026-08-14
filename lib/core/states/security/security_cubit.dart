@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../base/base_cubit.dart';
-import '../../../../models/safe_device/safe_device_model.dart';
-import '../../../../services/safe_device/safe_device_service.dart';
+import '../../base/base_cubit.dart';
+import '../../models/safe_device/safe_device_model.dart';
+import '../../services/safe_device/safe_device_service.dart';
 
 part 'security_state.dart';
 

@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:toastification/toastification.dart';
 
+import '../core/states/theme/theme_cubit.dart';
 import '../core/wrappers/connectivity/presentation/pages/connectivity_page.dart';
 import '../core/wrappers/security/presentation/pages/security_page.dart';
-import '../core/wrappers/theme/presentation/cubit/theme_cubit.dart';
 import 'config/app_config.dart';
 import 'routes/app_router.dart';
 import 'themes/app_theme.dart';

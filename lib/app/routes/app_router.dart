@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/account/presentation/pages/account_page.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/login/presentation/pages/login_page.dart';
 import '../../features/main_navigation/presentation/pages/main_navigation_page.dart';
 import '../../features/maintenance/presentation/pages/maintenance_page.dart';
@@ -55,13 +57,12 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           name: AppRouteName.home,
           path: '/${AppRouteName.home}',
-          builder: (_, __) => const Scaffold(body: Center(child: Text('Home'))),
+          builder: (_, __) => const HomePage(),
         ),
         GoRoute(
           name: AppRouteName.account,
           path: '/${AppRouteName.account}',
-          builder: (_, __) =>
-              const Scaffold(body: Center(child: Text('Account'))),
+          builder: (_, __) => const AccountPage(),
         ),
         // ...HomeRoutes.routes,
         // ...BrandRoutes.routes,

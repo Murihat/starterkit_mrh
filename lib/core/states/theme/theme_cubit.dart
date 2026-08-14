@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../base/base_cubit.dart';
-import '../../../../services/storage/storage_service.dart';
+import '../../base/base_cubit.dart';
+import '../../services/storage/storage_service.dart';
 
 part 'theme_state.dart';
 

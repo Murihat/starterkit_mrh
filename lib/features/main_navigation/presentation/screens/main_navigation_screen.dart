@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/routes/app_router.dart';
-import '../../../../core/wrappers/theme/presentation/cubit/theme_cubit.dart';
 import '../cubit/main_navigation_cubit.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -19,35 +18,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('StarterKit MRH'),
-        actions: [
-          BlocBuilder<ThemeCubit, ThemeState>(
-            builder: (context, state) {
-              return IconButton(
-                tooltip: state.isDark
-                    ? 'Switch to light mode'
-                    : 'Switch to dark mode',
-                onPressed: () {
-                  context.read<ThemeCubit>().toggleTheme();
-                },
-                icon: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  transitionBuilder: (child, animation) {
-                    return ScaleTransition(scale: animation, child: child);
-                  },
-                  child: Icon(
-                    state.isDark
-                        ? Icons.dark_mode_rounded
-                        : Icons.light_mode_rounded,
-                    key: ValueKey(state.isDark),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
       body: widget.child,
       bottomNavigationBar:
           BlocBuilder<MainNavigationCubit, MainNavigationState>(

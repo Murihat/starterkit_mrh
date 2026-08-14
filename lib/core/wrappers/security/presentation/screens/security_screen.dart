@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../app/themes/app_color.dart';
-import '../cubit/security_cubit.dart';
+import '../../../../states/security/security_cubit.dart';
 
 class SecurityScreen extends StatefulWidget {
   final Widget child;

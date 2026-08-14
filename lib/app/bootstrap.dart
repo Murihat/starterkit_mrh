@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../core/services/local_notification/local_notification_service.dart';
 import '../core/services/logger/logger_service.dart';
 import '../core/services/storage/storage_service.dart';
 import 'di/injection.dart';
@@ -25,6 +26,7 @@ Future<void> bootstrap(Future<Widget> Function() builder) async {
       );
       await initDependencies();
       final initialTheme = await sl<StorageService>().getThemeMode();
+      await sl<LocalNotificationService>().init();
       return runApp(
         MultiBlocProvider(
           providers: AppProviders.providers(initialTheme: initialTheme),

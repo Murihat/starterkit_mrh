@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/wrappers/connectivity/presentation/bloc/connectivity_bloc.dart';
-import '../../core/wrappers/security/presentation/cubit/security_cubit.dart';
-import '../../core/wrappers/theme/presentation/cubit/theme_cubit.dart';
+import '../../core/states/connectivity/connectivity_bloc.dart';
+import '../../core/states/local_notification/local_notification_cubit.dart';
+import '../../core/states/security/security_cubit.dart';
+import '../../core/states/theme/theme_cubit.dart';
 import '../../features/main_navigation/presentation/cubit/main_navigation_cubit.dart';
 import '../di/injection.dart';
 
@@ -17,6 +18,9 @@ class AppProviders {
     BlocProvider<SecurityCubit>(create: (_) => sl<SecurityCubit>()..check()),
     BlocProvider<ThemeCubit>(
       create: (_) => sl<ThemeCubit>(param1: initialTheme),
+    ),
+    BlocProvider<LocalNotificationCubit>(
+      create: (_) => sl<LocalNotificationCubit>(),
     ),
     BlocProvider<MainNavigationCubit>(create: (_) => sl<MainNavigationCubit>()),
   ];
