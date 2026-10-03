@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubit/main_navigation_cubit.dart';
 import '../screens/main_navigation_screen.dart';
 
 class MainNavigationPage extends StatelessWidget {
@@ -8,6 +10,9 @@ class MainNavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainNavigationScreen(child: child);
+    return BlocProvider(
+      create: (context) => MainNavigationCubit(),
+      child: MainNavigationScreen(child: child),
+    );
   }
 }

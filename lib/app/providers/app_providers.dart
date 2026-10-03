@@ -10,7 +10,6 @@ import '../../core/states/connectivity/connectivity_bloc.dart';
 import '../../core/states/local_notification/local_notification_cubit.dart';
 import '../../core/states/security/security_cubit.dart';
 import '../../core/states/theme/theme_cubit.dart';
-import '../../features/main_navigation/presentation/cubit/main_navigation_cubit.dart';
 import '../di/injection.dart';
 
 class AppProviders {
@@ -30,11 +29,9 @@ class AppProviders {
       create: (_) =>
           ThemeCubit(storage: sl<StorageService>(), initialTheme: initialTheme),
     ),
-
     BlocProvider<LocalNotificationCubit>(
       create: (_) =>
           LocalNotificationCubit(service: sl<LocalNotificationService>()),
     ),
-    BlocProvider<MainNavigationCubit>(create: (_) => sl<MainNavigationCubit>()),
   ];
 }
