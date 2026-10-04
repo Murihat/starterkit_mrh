@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/extensions/localization_extension.dart';
+import '../../../../core/extensions/theme_extension.dart';
 import '../../../../core/states/local_notification/local_notification_cubit.dart';
 import '../../../../core/states/locale/locale_cubit.dart';
 import '../../../../core/states/theme/theme_cubit.dart';
@@ -62,33 +63,28 @@ class _GuestHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+        color: context.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
-        ),
+        border: Border.all(color: context.colorScheme.outline.withOpacity(0.4)),
       ),
       child: Column(
         children: [
           CircleAvatar(
             radius: 36,
-            backgroundColor: colorScheme.primaryContainer,
+            backgroundColor: context.colorScheme.onPrimary,
             child: Icon(
               Icons.person_outline_rounded,
               size: 40,
-              color: colorScheme.onPrimaryContainer,
+              color: context.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 12),
           Text(
             context.l10n.accountGuestUser,
-            style: theme.textTheme.titleMedium?.copyWith(
+            style: context.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -96,8 +92,8 @@ class _GuestHeaderCard extends StatelessWidget {
           Text(
             context.l10n.accountGuestUserDesc,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
+            style: context.textTheme.bodySmall?.copyWith(
+              color: context.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 16),
@@ -152,8 +148,9 @@ class _PreferencesCard extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       sheetContext.l10n.accountLanguageSelectTitle,
-                      style: Theme.of(sheetContext).textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      style: context.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -163,7 +160,7 @@ class _PreferencesCard extends StatelessWidget {
                   trailing: currentCode == 'id'
                       ? Icon(
                           Icons.check_circle_rounded,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: context.colorScheme.primary,
                         )
                       : null,
                   onTap: () {
@@ -177,7 +174,7 @@ class _PreferencesCard extends StatelessWidget {
                   trailing: currentCode == 'en'
                       ? Icon(
                           Icons.check_circle_rounded,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: context.colorScheme.primary,
                         )
                       : null,
                   onTap: () {
@@ -195,16 +192,13 @@ class _PreferencesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return Card(
       elevation: 0,
-      color: colorScheme.surfaceContainerLow,
+      color: context.colorScheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.4),
+          color: context.colorScheme.outlineVariant.withValues(alpha: 0.4),
         ),
       ),
       child: Column(
@@ -216,14 +210,14 @@ class _PreferencesCard extends StatelessWidget {
                   themeState.isDark
                       ? Icons.dark_mode_rounded
                       : Icons.light_mode_rounded,
-                  color: colorScheme.primary,
+                  color: context.colorScheme.primary,
                 ),
                 title: Text(context.l10n.accountThemeDarkMode),
                 subtitle: Text(
                   themeState.isDark
                       ? context.l10n.accountThemeActive
                       : context.l10n.accountThemeInactive,
-                  style: theme.textTheme.bodySmall,
+                  style: context.textTheme.bodySmall,
                 ),
                 value: themeState.isDark,
                 onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
@@ -233,7 +227,7 @@ class _PreferencesCard extends StatelessWidget {
           Divider(
             height: 1,
             indent: 56,
-            color: colorScheme.outlineVariant.withValues(alpha: 0.3),
+            color: context.colorScheme.outlineVariant.withValues(alpha: 0.3),
           ),
           BlocBuilder<LocaleCubit, LocaleState>(
             builder: (context, localeState) {
@@ -241,14 +235,14 @@ class _PreferencesCard extends StatelessWidget {
               return ListTile(
                 leading: Icon(
                   Icons.language_rounded,
-                  color: colorScheme.primary,
+                  color: context.colorScheme.primary,
                 ),
                 title: Text(context.l10n.accountLanguage),
                 subtitle: Text(
                   isId
                       ? '🇮🇩 ${context.l10n.accountLanguageIndonesian}'
                       : '🇬🇧 ${context.l10n.accountLanguageEnglish}',
-                  style: theme.textTheme.bodySmall,
+                  style: context.textTheme.bodySmall,
                 ),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onTap: () => _showLanguageSheet(context),
@@ -266,8 +260,7 @@ class _AboutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = context.colorScheme;
 
     return Card(
       elevation: 0,
@@ -316,7 +309,7 @@ class _AboutCard extends StatelessWidget {
             title: Text(context.l10n.accountAboutAppVersion),
             trailing: Text(
               'v1.0.0',
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: context.textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
@@ -332,7 +325,7 @@ class _DevToolsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = context.colorScheme;
 
     return Card(
       elevation: 0,
@@ -399,10 +392,10 @@ class _SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+        style: context.textTheme.labelMedium?.copyWith(
           fontWeight: FontWeight.bold,
           letterSpacing: 0.8,
-          color: Theme.of(context).colorScheme.primary,
+          color: context.colorScheme.primary,
         ),
       ),
     );

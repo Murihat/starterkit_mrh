@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../app/themes/app_color.dart';
-import '../../../../../app/themes/app_font.dart';
+import '../../../../extensions/theme_extension.dart';
 
 class ConnectivityScreen extends StatefulWidget {
   const ConnectivityScreen({super.key});
@@ -73,15 +73,12 @@ class _ConnectivityScreenState extends State<ConnectivityScreen>
                   const SizedBox(height: 20),
                   Text(
                     'No Internet Connection',
-                    style: TextStyle(
-                      fontSize: AppFontSize.xl.fontSize,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: context.textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Please check your connection',
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                    style: context.textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 16),
                   const _AnimatedDots(),
@@ -129,10 +126,7 @@ class _AnimatedDotsState extends State<_AnimatedDots>
         final value = (_controller.value * 3).floor();
         return Text(
           'Reconnecting${'.' * value}',
-          style: TextStyle(
-            fontSize: AppFontSize.lg.fontSize,
-            fontWeight: FontWeight.w600,
-          ),
+          style: context.textTheme.labelLarge,
         );
       },
     );

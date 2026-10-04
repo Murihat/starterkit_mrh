@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_color.dart';
+import 'app_typography.dart';
 
 class AppTheme {
   AppTheme._();
@@ -8,7 +9,10 @@ class AppTheme {
   static final ThemeData light = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    fontFamily: 'OpenSans',
+    fontFamily: AppTypography.fontFamily,
+
+    // Hubungkan typography resmi dengan warna text light
+    textTheme: AppTypography.createTextTheme(AppColors.lightText),
 
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
@@ -17,12 +21,18 @@ class AppTheme {
 
     scaffoldBackgroundColor: AppColors.lightBackground,
 
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: AppColors.lightSurface,
       foregroundColor: AppColors.lightText,
       elevation: 0,
       scrolledUnderElevation: 0,
       surfaceTintColor: Colors.transparent,
+      titleTextStyle: TextStyle(
+        fontFamily: AppTypography.fontFamily,
+        fontSize: AppTypography.lg,
+        fontWeight: AppTypography.bold,
+        color: AppColors.lightText,
+      ),
     ),
 
     cardTheme: CardThemeData(
@@ -30,6 +40,34 @@ class AppTheme {
       elevation: 0,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
+
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        textStyle: TextStyle(
+          fontFamily: AppTypography.fontFamily,
+          fontSize: AppTypography.sm,
+          fontWeight: AppTypography.semiBold,
+        ),
+        minimumSize: const Size(double.infinity, 48),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    ),
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        textStyle: TextStyle(
+          fontFamily: AppTypography.fontFamily,
+          fontSize: AppTypography.sm,
+          fontWeight: AppTypography.semiBold,
+        ),
+        minimumSize: const Size(double.infinity, 48),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        side: const BorderSide(color: AppColors.primary),
+      ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
@@ -44,24 +82,6 @@ class AppTheme {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-      ),
-    ),
-
-    filledButtonTheme: FilledButtonThemeData(
-      style: FilledButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        minimumSize: const Size(double.infinity, 48),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    ),
-
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.primary,
-        minimumSize: const Size(double.infinity, 48),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        side: const BorderSide(color: AppColors.primary),
       ),
     ),
 
@@ -93,7 +113,10 @@ class AppTheme {
   static final ThemeData dark = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    fontFamily: 'OpenSans',
+    fontFamily: AppTypography.fontFamily,
+
+    // Hubungkan typography resmi dengan warna text dark
+    textTheme: AppTypography.createTextTheme(AppColors.darkText),
 
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
@@ -102,12 +125,18 @@ class AppTheme {
 
     scaffoldBackgroundColor: AppColors.darkBackground,
 
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: AppColors.darkSurface,
       foregroundColor: AppColors.darkText,
       elevation: 0,
       scrolledUnderElevation: 0,
       surfaceTintColor: Colors.transparent,
+      titleTextStyle: TextStyle(
+        fontFamily: AppTypography.fontFamily,
+        fontSize: AppTypography.lg,
+        fontWeight: AppTypography.bold,
+        color: AppColors.darkText,
+      ),
     ),
 
     cardTheme: CardThemeData(
@@ -115,6 +144,34 @@ class AppTheme {
       elevation: 0,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
+
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        textStyle: TextStyle(
+          fontFamily: AppTypography.fontFamily,
+          fontSize: AppTypography.sm,
+          fontWeight: AppTypography.semiBold,
+        ),
+        minimumSize: const Size(double.infinity, 48),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    ),
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Colors.white,
+        textStyle: TextStyle(
+          fontFamily: AppTypography.fontFamily,
+          fontSize: AppTypography.sm,
+          fontWeight: AppTypography.semiBold,
+        ),
+        minimumSize: const Size(double.infinity, 48),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        side: const BorderSide(color: AppColors.primary),
+      ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
@@ -129,24 +186,6 @@ class AppTheme {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-      ),
-    ),
-
-    filledButtonTheme: FilledButtonThemeData(
-      style: FilledButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        minimumSize: const Size(double.infinity, 48),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    ),
-
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.white,
-        minimumSize: const Size(double.infinity, 48),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        side: const BorderSide(color: AppColors.primary),
       ),
     ),
 

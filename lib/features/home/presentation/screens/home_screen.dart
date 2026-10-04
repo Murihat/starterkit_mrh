@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/localization_extension.dart';
+import '../../../../core/extensions/theme_extension.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +15,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.l10n.homeTitle)),
-      body: Center(child: Text(context.l10n.homeWelcome)),
+      body: Center(
+        child: Text(
+          context.l10n.homeWelcome,
+          style: context.textTheme.bodyMedium,
+        ),
+      ),
     );
   }
 }
