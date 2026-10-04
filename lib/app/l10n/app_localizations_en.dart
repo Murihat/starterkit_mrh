@@ -39,6 +39,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeWelcome => 'Welcome to the Home Screen!';
 
   @override
+  String get authLoginTitle => 'Login';
+
+  @override
+  String get authLoginSubtitle => 'Please enter your details to sign in';
+
+  @override
+  String get authEmailLabel => 'Email Address';
+
+  @override
+  String get authEmailHint => 'Enter your email';
+
+  @override
+  String get authEmailEmpty => 'Email cannot be empty';
+
+  @override
+  String get authEmailInvalid => 'Please enter a valid email';
+
+  @override
+  String get authPasswordLabel => 'Password';
+
+  @override
+  String get authPasswordHint => 'Enter your password';
+
+  @override
+  String get authPasswordEmpty => 'Password cannot be empty';
+
+  @override
+  String get authForgotPassword => 'Forgot Password?';
+
+  @override
+  String get authBtnSignIn => 'Sign In';
+
+  @override
+  String get authOrDivider => 'OR CONTINUE WITH';
+
+  @override
+  String get authBtnGoogle => 'Sign In with Google';
+
+  @override
+  String get authNoAccount => 'Don\'t have an account?';
+
+  @override
+  String get authBtnSignUp => 'Sign Up';
+
+  @override
   String get accountTitle => 'Account';
 
   @override

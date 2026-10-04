@@ -50,26 +50,58 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
-    ShellRoute(
-      navigatorKey: shellNavigatorKey,
-      builder: (_, __, child) => MainNavigationPage(child: child),
-      routes: [
-        GoRoute(
-          name: AppRouteName.home,
-          path: '/${AppRouteName.home}',
-          builder: (_, __) => const HomePage(),
+
+    // ============================================================
+    // STATEFUL SHELL ROUTE (Mengelola index tab otomatis)
+    // ============================================================
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return MainNavigationPage(navigationShell: navigationShell);
+      },
+      branches: [
+        // Tab 0: Home
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              name: AppRouteName.home,
+              path: '/${AppRouteName.home}',
+              builder: (_, __) => const HomePage(),
+            ),
+          ],
         ),
-        GoRoute(
-          name: AppRouteName.account,
-          path: '/${AppRouteName.account}',
-          builder: (_, __) => const AccountPage(),
+
+        // Tab 1: Account
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              name: AppRouteName.account,
+              path: '/${AppRouteName.account}',
+              builder: (_, __) => const AccountPage(),
+            ),
+          ],
         ),
-        // ...HomeRoutes.routes,
-        // ...BrandRoutes.routes,
-        // ...WaitingListRoutes.routes,
-        // ...OrderRoutes.routes,
-        // ...RewardRoutes.routes,
       ],
     ),
+    // ShellRoute(
+    //   navigatorKey: shellNavigatorKey,
+    //   builder: (_, __, child) => MainNavigationPage(child: child),
+    //   routes: [
+    //     GoRoute(
+    //       name: AppRouteName.home,
+    //       path: '/${AppRouteName.home}',
+    //       builder: (_, __) => const HomePage(),
+    //     ),
+    //     GoRoute(
+    //       name: AppRouteName.account,
+    //       path: '/${AppRouteName.account}',
+    //       builder: (_, __) => const AccountPage(),
+    //     ),
+    //     // ...HomeRoutes.routes,
+    //     // ...BrandRoutes.routes,
+    //     // ...WaitingListRoutes.routes,
+    //     // ...OrderRoutes.routes,
+    //     // ...RewardRoutes.routes,
+    //   ],
+    // ),
   ],
 );

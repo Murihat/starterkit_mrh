@@ -39,6 +39,51 @@ class AppLocalizationsId extends AppLocalizations {
   String get homeWelcome => 'Selamat Datang di Halaman Beranda!';
 
   @override
+  String get authLoginTitle => 'Login';
+
+  @override
+  String get authLoginSubtitle => 'Silakan masukkan data Anda untuk masuk';
+
+  @override
+  String get authEmailLabel => 'Alamat Email';
+
+  @override
+  String get authEmailHint => 'Masukkan email Anda';
+
+  @override
+  String get authEmailEmpty => 'Email tidak boleh kosong';
+
+  @override
+  String get authEmailInvalid => 'Format email tidak valid';
+
+  @override
+  String get authPasswordLabel => 'Kata Sandi';
+
+  @override
+  String get authPasswordHint => 'Masukkan kata sandi';
+
+  @override
+  String get authPasswordEmpty => 'Kata sandi tidak boleh kosong';
+
+  @override
+  String get authForgotPassword => 'Lupa Kata Sandi?';
+
+  @override
+  String get authBtnSignIn => 'Masuk';
+
+  @override
+  String get authOrDivider => 'ATAU MASUK DENGAN';
+
+  @override
+  String get authBtnGoogle => 'Masuk dengan Google';
+
+  @override
+  String get authNoAccount => 'Belum punya akun?';
+
+  @override
+  String get authBtnSignUp => 'Daftar';
+
+  @override
   String get accountTitle => 'Akun';
 
   @override

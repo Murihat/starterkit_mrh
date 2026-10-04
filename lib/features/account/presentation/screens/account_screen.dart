@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/routes/app_router.dart';
 import '../../../../core/extensions/localization_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
 import '../../../../core/states/local_notification/local_notification_cubit.dart';
@@ -101,7 +103,9 @@ class _GuestHeaderCard extends StatelessWidget {
             children: [
               Expanded(
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(AppRouteName.login);
+                  },
                   child: Text(context.l10n.accountBtnLogin),
                 ),
               ),

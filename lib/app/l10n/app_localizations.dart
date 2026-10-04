@@ -146,6 +146,96 @@ abstract class AppLocalizations {
   /// **'Welcome to the Home Screen!'**
   String get homeWelcome;
 
+  /// No description provided for @authLoginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get authLoginTitle;
+
+  /// No description provided for @authLoginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your details to sign in'**
+  String get authLoginSubtitle;
+
+  /// No description provided for @authEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get authEmailLabel;
+
+  /// No description provided for @authEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get authEmailHint;
+
+  /// No description provided for @authEmailEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Email cannot be empty'**
+  String get authEmailEmpty;
+
+  /// No description provided for @authEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get authEmailInvalid;
+
+  /// No description provided for @authPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPasswordLabel;
+
+  /// No description provided for @authPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get authPasswordHint;
+
+  /// No description provided for @authPasswordEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Password cannot be empty'**
+  String get authPasswordEmpty;
+
+  /// No description provided for @authForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get authForgotPassword;
+
+  /// No description provided for @authBtnSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get authBtnSignIn;
+
+  /// No description provided for @authOrDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'OR CONTINUE WITH'**
+  String get authOrDivider;
+
+  /// No description provided for @authBtnGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In with Google'**
+  String get authBtnGoogle;
+
+  /// No description provided for @authNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get authNoAccount;
+
+  /// No description provided for @authBtnSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get authBtnSignUp;
+
   /// No description provided for @accountTitle.
   ///
   /// In en, this message translates to:
