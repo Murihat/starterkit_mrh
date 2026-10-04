@@ -8,34 +8,43 @@ import '../../models/safe_device/safe_device_model.dart';
 class SafeDeviceService {
   Future<SafeDeviceModel> check() async {
     try {
-      final isJailBroken = await SafeDevice.isJailBroken;
+      // 1. Eksekusi pengecekan umum secara paralel
+      final commonChecks = await Future.wait([
+        SafeDevice.isJailBroken,
+        SafeDevice.isRealDevice,
+        SafeDevice.isSafeDevice,
+      ]);
 
-      final isRealDevice = await SafeDevice.isRealDevice;
-
-      final isSafeDevice = await SafeDevice.isSafeDevice;
+      final isJailBroken = commonChecks[0];
+      final isRealDevice = commonChecks[1];
+      final isSafeDevice = commonChecks[2];
 
       bool isMockLocation = false;
       bool isDevelopmentModeEnable = false;
       bool isOnExternalStorage = false;
       bool isJailBrokenCustom = false;
+      Map<String, dynamic> jailbreakDetails = const {};
+      Map<String, dynamic> rootDetectionDetails = const {};
 
-      Map<String, dynamic> jailbreakDetails = {};
-      Map<String, dynamic> rootDetectionDetails = {};
-
-      if (Platform.isAndroid) {
-        isMockLocation = await SafeDevice.isMockLocation;
-
-        isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
-
-        isOnExternalStorage = await SafeDevice.isOnExternalStorage;
-
-        rootDetectionDetails = await SafeDevice.rootDetectionDetails;
-      }
-
-      if (Platform.isIOS) {
-        isJailBrokenCustom = await SafeDevice.isJailBrokenCustom;
-
-        jailbreakDetails = await SafeDevice.jailbreakDetails;
+      // 2. Eksekusi platform-specific secara paralel
+      if (!kIsWeb && Platform.isAndroid) {
+        final results = await Future.wait([
+          SafeDevice.isMockLocation,
+          SafeDevice.isDevelopmentModeEnable,
+          SafeDevice.isOnExternalStorage,
+          SafeDevice.rootDetectionDetails,
+        ]);
+        isMockLocation = results[0] as bool;
+        isDevelopmentModeEnable = results[1] as bool;
+        isOnExternalStorage = results[2] as bool;
+        rootDetectionDetails = results[3] as Map<String, dynamic>;
+      } else if (!kIsWeb && Platform.isIOS) {
+        final results = await Future.wait([
+          SafeDevice.isJailBrokenCustom,
+          SafeDevice.jailbreakDetails,
+        ]);
+        isJailBrokenCustom = results[0] as bool;
+        jailbreakDetails = results[1] as Map<String, dynamic>;
       }
 
       return SafeDeviceModel(
@@ -50,21 +59,19 @@ class SafeDeviceService {
         rootDetectionDetails: rootDetectionDetails,
       );
     } catch (e, s) {
-      debugPrint('DeviceSecurityService Error: $e');
-
-      debugPrint(s.toString());
-
-      return const SafeDeviceModel(
-        isJailBroken: false,
-        isJailBrokenCustom: false,
-        isMockLocation: false,
-        isRealDevice: true,
-        isOnExternalStorage: false,
-        isSafeDevice: true,
-        isDevelopmentModeEnable: false,
-        jailbreakDetails: {},
-        rootDetectionDetails: {},
-      );
+      debugPrint('SafeDeviceService Error: $e\n$s');
+      rethrow;
+      // return const SafeDeviceModel(
+      //   isJailBroken: false,
+      //   isJailBrokenCustom: false,
+      //   isMockLocation: false,
+      //   isRealDevice: true,
+      //   isOnExternalStorage: false,
+      //   isSafeDevice: true,
+      //   isDevelopmentModeEnable: false,
+      //   jailbreakDetails: {},
+      //   rootDetectionDetails: {},
+      // );
     }
   }
 }

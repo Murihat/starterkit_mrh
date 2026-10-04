@@ -14,18 +14,34 @@ class SecurityCubit extends BaseCubit<SecurityState> {
   Future<void> check() async {
     safeEmit(state.copyWith(status: SecurityStatus.loading));
 
-    final result = await service.check();
+    try {
+      final result = await service.check();
+      final status = _evaluateSecurityStatus(result);
 
-    print("================ SAFE DEVICE check");
-    print(result.toJson());
+      safeEmit(state.copyWith(status: status, result: result));
+    } catch (e) {
+      safeEmit(
+        state.copyWith(status: SecurityStatus.failure, message: e.toString()),
+      );
+    }
+  }
 
-    safeEmit(
-      state.copyWith(
-        status: result.isMockLocation
-            ? SecurityStatus.isMockLocation
-            : SecurityStatus.success,
-        result: result,
-      ),
-    );
+  SecurityStatus _evaluateSecurityStatus(SafeDeviceModel result) {
+    if (result.isJailBroken || result.isJailBrokenCustom) {
+      return SecurityStatus.isJailBroken;
+    }
+    if (!result.isRealDevice) {
+      return SecurityStatus.isEmulator;
+    }
+    if (result.isMockLocation) {
+      return SecurityStatus.isMockLocation;
+    }
+    if (result.isDevelopmentModeEnable) {
+      return SecurityStatus.isDevMode;
+    }
+    if (!result.isSafeDevice) {
+      return SecurityStatus.untrusted;
+    }
+    return SecurityStatus.success;
   }
 }
