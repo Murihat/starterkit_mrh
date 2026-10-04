@@ -1,323 +1,139 @@
-# Starterkit MRH
+﻿# Starterkit MRH
 
-Starterkit Flutter berbasis Material 3 untuk menjadi fondasi aplikasi mobile. Proyek ini menyediakan struktur modular, dependency injection, state management BLoC/Cubit, routing, konfigurasi environment, penyimpanan aman, pengecekan koneksi, pemeriksaan keamanan perangkat, serta dukungan light dan dark mode.
+Starterkit aplikasi Flutter berbasis Material 3. Repository ini menyediakan fondasi aplikasi mobile/web: bootstrap dan konfigurasi, routing, state global dengan BLoC/Cubit, tema dan bahasa, layanan perangkat, penyimpanan lokal aman, serta client HTTP. Fitur produk seperti autentikasi dan halaman utama masih berupa UI awal; belum ada alur autentikasi atau integrasi backend khusus fitur.
 
-## Teknologi utama
+## Teknologi
 
-| Kebutuhan | Implementasi |
-| --- | --- |
-| Framework | Flutter (Dart SDK `^3.12.2`) |
-| State management | `flutter_bloc` dan `equatable` |
-| Dependency injection | `get_it` |
-| Routing | `go_router` |
-| HTTP client | `dio` |
-| Secure storage | `flutter_secure_storage` |
-| Environment | `flutter_dotenv` |
-| Konektivitas | `connectivity_plus` |
-| Pemeriksaan perangkat | `safe_device` |
-| UI responsive | `flutter_screenutil` |
-| Notifikasi UI | `toastification`, `flutter_local_notifications` |
+- Flutter dan Dart (`pubspec.yaml` menetapkan SDK `^3.12.2`)
+- `flutter_bloc` dan `equatable` untuk state management
+- `get_it` untuk dependency injection
+- `go_router` untuk routing
+- `dio` untuk HTTP
+- `flutter_secure_storage` untuk penyimpanan sensitif
+- `flutter_dotenv` untuk konfigurasi environment
+- `connectivity_plus`, `safe_device`, `device_info_plus`, dan `package_info_plus` untuk informasi perangkat
+- `flutter_local_notifications` untuk notifikasi lokal
+- `flutter_localizations` dan file ARB untuk lokalisasi Indonesia dan Inggris
 
-## Fitur yang sudah tersedia
+Versi lengkap dependency tercantum di [`pubspec.yaml`](pubspec.yaml).
 
-- Bootstrap aplikasi dengan penanganan error melalui `runZonedGuarded`.
-- Konfigurasi environment melalui file `.env`.
-- Dependency injection terpusat menggunakan GetIt.
-- Tema Material 3 untuk light mode dan dark mode.
-- Preferensi tema disimpan secara aman di perangkat.
-- Tombol penggantian tema pada halaman Main Navigation.
-- Bottom navigation Material 3 untuk route Home dan Account.
-- Routing deklaratif menggunakan GoRouter.
-- Splash screen animatif yang mengarahkan pengguna ke `/home`.
-- Overlay offline ketika perangkat tidak terhubung ke jaringan.
-- Pemeriksaan keamanan perangkat untuk mock location, root/jailbreak, developer mode, dan penyimpanan eksternal sesuai platform.
-- API client berbasis Dio dengan token Bearer, header perangkat, multipart upload, download file, dan pemetaan error HTTP.
-- Identitas perangkat yang persisten untuk kebutuhan request API.
-- Layanan secure storage untuk string dan object JSON.
-- Layanan logging dan observer BLoC.
-- Dukungan Android, iOS, web, Windows, macOS, dan Linux dari struktur Flutter standar.
-
-## Struktur proyek
+## Gambaran arsitektur
 
 ```text
-.
-├── android/                         # Konfigurasi dan runner Android
-├── ios/                             # Konfigurasi dan runner iOS
-├── web/                             # Runner web dan manifest
-├── windows/                         # Runner Windows
-├── macos/                           # Runner macOS
-├── linux/                           # Runner Linux
-├── assets/                          # Asset aplikasi: images, icons, fonts
-├── env/                             # File environment (.env)
-├── test/                            # Widget/integration test
-├── lib/
-│   ├── main.dart                    # Entry point aplikasi
-│   ├── app/
-│   │   ├── app.dart                 # MaterialApp, tema, router, global wrapper
-│   │   ├── bootstrap.dart            # Inisialisasi Flutter, env, DI, dan error zone
-│   │   ├── config/
-│   │   │   └── app_config.dart      # Pembacaan APP_NAME, BASE_URL, API_KEY, ENABLE_LOG
-│   │   ├── di/
-│   │   │   └── injection.dart       # Registrasi service dan BLoC/Cubit pada GetIt
-│   │   ├── observer/
-│   │   │   └── app_observer.dart    # Observer perubahan state BLoC
-│   │   ├── providers/
-│   │   │   └── app_providers.dart   # Global BlocProvider
-│   │   ├── routes/
-│   │   │   └── app_router.dart      # Definisi route dan ShellRoute
-│   │   └── themes/
-│   │       ├── app_color.dart       # Token warna aplikasi
-│   │       ├── app_font.dart        # Konstanta ukuran font
-│   │       └── app_theme.dart       # ThemeData light dan dark Material 3
-│   ├── core/
-│   │   ├── base/
-│   │   │   └── base_cubit.dart      # Base Cubit dengan safe emit
-│   │   ├── models/
-│   │   │   ├── device_info/         # Model metadata perangkat
-│   │   │   └── safe_device/         # Model hasil pemeriksaan perangkat
-│   │   ├── network/
-│   │   │   ├── api_client.dart       # Client Dio dan interceptor API
-│   │   │   └── api_exception.dart    # Exception API terstruktur
-│   │   ├── services/
-│   │   │   ├── connectivity/        # Status konektivitas perangkat
-│   │   │   ├── device/              # Pengambilan dan penyimpanan device info
-│   │   │   ├── logger/              # Layanan logging
-│   │   │   ├── safe_device/         # Pemeriksaan keamanan perangkat
-│   │   │   └── storage/             # Secure storage dan key tersimpan
-│   │   └── wrappers/
-│   │       ├── connectivity/        # BLoC dan layar overlay offline
-│   │       ├── security/            # Cubit dan layar perangkat tidak aman
-│   │       └── theme/               # Cubit dan state pengaturan tema
-│   └── features/
-│       ├── splash/                  # Splash page/screen
-│       ├── login/                   # Login page/screen
-│       ├── signup/                  # Sign-up page/screen
-│       ├── maintenance/             # Maintenance page/screen
-│       └── main_navigation/         # Shell, bottom navigation, dan pengubah tema
-├── pubspec.yaml                     # Dependency dan konfigurasi Flutter
-└── analysis_options.yaml             # Aturan static analysis/lint
+lib/
+├── main.dart                  # Entry point
+├── app/                       # Bootstrap, konfigurasi, DI, routing, tema, provider, lokalisasi
+├── core/                      # Layanan bersama, model perangkat, jaringan, state, wrapper, extension
+└── features/                  # Modul UI fitur
+    ├── account/
+    ├── home/
+    ├── login/
+    ├── main_navigation/
+    ├── maintenance/
+    ├── signup/
+    └── splash/
 ```
 
-Setiap feature/wrapper memisahkan `pages` (komposisi atau entry widget) dan `screens` (implementasi tampilan). State yang relevan berada di folder `bloc` atau `cubit`.
+`app/` mengatur komposisi aplikasi. `core/` menampung kapabilitas lintas fitur seperti `ApiClient`, `StorageService`, layanan konektivitas/perangkat, serta state tema, bahasa, keamanan, dan notifikasi. Tiap folder fitur yang tersedia membagi UI menjadi `pages/` dan `screens/`; hanya navigasi utama yang memiliki Cubit sendiri.
 
-## Alur inisialisasi aplikasi
+Struktur saat ini berorientasi UI dan layanan bersama, belum menerapkan lapisan domain/data atau pola repository/use case secara konsisten. Saat menambahkan fitur yang terhubung ke backend, pisahkan model dan logika fitur dari widget agar batas tanggung jawabnya jelas.
 
-```text
-main()
-  → bootstrap()
-    → WidgetsFlutterBinding.ensureInitialized()
-    → memuat env/.env.dev (atau nilai --dart-define ENV)
-    → initDependencies()
-    → mengambil preferensi tema dari secure storage
-    → MultiBlocProvider
-    → App
-      → MaterialApp.router
-        → ConnectivityPage
-          → SecurityPage
-            → route aktif
-```
+## Siklus aplikasi
 
-`bootstrap` juga mengunci orientasi ke portrait (`DeviceOrientation.portraitUp`) dan menangkap error asynchronous untuk diteruskan ke `LoggerService`.
+1. `main()` memanggil `bootstrap()`.
+2. Bootstrap menyiapkan Flutter, menangkap error framework/platform/zona, mengunci orientasi portrait, memuat file environment, mendaftarkan dependency, lalu menginisialisasi notifikasi lokal.
+3. `AppProviders` menyediakan state global: konektivitas, pemeriksaan keamanan, tema, bahasa, dan notifikasi.
+4. `App` memasang `ScreenUtil`, lokalisasi, tema, router, dan wrapper konektivitas serta keamanan.
+5. Router membuka Splash (`/`); setelah dua detik Splash mengarahkan pengguna ke Home (`/home`).
 
-## Routing
+## Routing dan halaman
 
-| Nama route | Path | Halaman | Keterangan |
-| --- | --- | --- | --- |
-| `splash` | `/` | `SplashPage` | Route awal; setelah sekitar 2 detik menuju home. |
-| `maintenance` | `/maintenance` | `MaintenancePage` | Halaman pemeliharaan. |
-| `login` | `/login` | `LoginPage` | Halaman login. |
-| `signup` | `/login/signup` | `SignupPage` | Child route dari login. |
-| `home` | `/home` | Scaffold Home | Berjalan di dalam `ShellRoute` Main Navigation. |
-| `account` | `/account` | Scaffold Account | Berjalan di dalam `ShellRoute` Main Navigation. |
+Route didefinisikan di [`lib/app/routes/app_router.dart`](lib/app/routes/app_router.dart).
 
-Untuk menambah route utama yang menggunakan shell navigation, tambahkan `GoRoute` pada daftar `routes` milik `ShellRoute` di `lib/app/routes/app_router.dart`.
+| Path | Halaman | Catatan |
+| --- | --- | --- |
+| `/` | Splash | Mengarah ke `/home` setelah dua detik. |
+| `/maintenance` | Maintenance | Halaman informasi maintenance. |
+| `/login` | Login | UI form login; autentikasi belum terhubung. |
+| `/login/signup` | Sign Up | Child route login; UI dasar. |
+| `/home` | Home | Cabang pertama `StatefulShellRoute`. |
+| `/account` | Account | Cabang kedua `StatefulShellRoute`. |
 
-## Tema: light dan dark mode
+Home dan Account berbagi `MainNavigationPage` dengan navigasi bawah dan mempertahankan stack tiap cabang. Login, Home, Account, Sign Up, dan Maintenance adalah titik awal UI, bukan fitur backend yang telah selesai.
 
-Tema dikelola oleh `ThemeCubit` dan dipasang pada `MaterialApp.router` melalui `theme`, `darkTheme`, dan `themeMode`.
+## State global dan wrapper
 
-- Tema awal adalah light mode jika belum ada preferensi tersimpan.
-- Nilai `light` atau `dark` disimpan memakai `FlutterSecureStorage` dengan key `theme_mode`.
-- Tema tersimpan dibaca sebelum `runApp`, lalu diberikan sebagai `initialTheme` ke `ThemeCubit`.
-- `ThemeCubit.toggleTheme()` digunakan oleh tombol pada `MainNavigationScreen`.
-- Kedua tema menggunakan Material 3, font family `OpenSans`, seed color hijau tua `#0F4C4A`, serta card/dialog/bottom sheet tanpa surface tint.
+`AppProviders` membuat:
 
-Token warna utama berada pada `lib/app/themes/app_color.dart`:
+- `ConnectivityBloc` untuk memantau koneksi. Wrapper konektivitas menampilkan layar offline saat status dianggap terputus.
+- `SecurityCubit` untuk memeriksa perangkat. Wrapper keamanan menahan konten utama pada beberapa status perangkat yang tidak lolos pemeriksaan.
+- `ThemeCubit` dan `LocaleCubit` untuk preferensi tampilan dan bahasa.
+- `LocalNotificationCubit` untuk state notifikasi lokal.
 
-| Token | Nilai |
-| --- | --- |
-| Primary | `#0F4C4A` |
-| Secondary | `#C8A24D` |
-| Light background / surface / text | `#F6F8F7` / `#FFFFFF` / `#1F1F1F` |
-| Dark background / surface / text | `#121212` / `#1E1E1E` / `#FFFFFF` |
-| Success / warning / error | `#2E7D32` / `#ED9D00` / `#D32F2F` |
+Dependency service didaftarkan di [`lib/app/di/injection.dart`](lib/app/di/injection.dart) melalui GetIt (`sl<T>()`). Tambahkan dependency global di sana dan provider global di [`lib/app/providers/app_providers.dart`](lib/app/providers/app_providers.dart) bila memang diperlukan di seluruh aplikasi.
 
-Saat membuat UI baru, gunakan `Theme.of(context).colorScheme` atau token tema daripada memberi warna tetap pada widget. Ini menjaga tampilan konsisten pada kedua mode.
+## Tema dan bahasa
 
-## Global state dan wrapper
+Tema Material 3 light/dark disusun di `lib/app/themes/`. Preferensi `light` atau `dark` disimpan pada secure storage dengan key `theme_mode`. Cubit memuat preferensi setelah provider dibuat; state awal sebelum pemuatan adalah light. Bahasa didukung dalam Bahasa Indonesia (`id-ID`) dan Inggris (`en-US`), menggunakan file ARB di `lib/app/l10n/` dan preferensi `app_locale`.
 
-Provider global dibuat di `AppProviders`:
+Saat menambah string terjemahan, perbarui kedua file ARB dan jalankan generator lokalisasi Flutter sesuai konfigurasi proyek. Gunakan `context.l10n` dan warna dari theme/color scheme pada UI.
 
-- `ThemeCubit`: memuat dan mengubah preferensi tema.
-- `ConnectivityBloc`: memantau konektivitas dan menampilkan `ConnectivityScreen` sebagai overlay saat offline.
-- `SecurityCubit`: menjalankan pemeriksaan perangkat saat startup.
-- `MainNavigationCubit`: menyimpan index tujuan bottom navigation.
+## Environment
 
-`ConnectivityPage` dan `SecurityPage` membungkus seluruh router dari `App`, sehingga perilaku koneksi dan keamanan dapat diterapkan secara global.
-
-## Keamanan perangkat
-
-`SafeDeviceService` memakai package `safe_device` untuk mengambil sinyal keamanan berikut:
-
-- Status jailbreak/root dan detail pendeteksiannya.
-- Keaslian perangkat (`isRealDevice`) dan keamanan perangkat (`isSafeDevice`).
-- Mock location, developer mode, dan external storage di Android.
-- Custom jailbreak check dan jailbreak details di iOS.
-
-Jika status `SecurityStatus.isMockLocation` diterima, `SecurityScreen` menampilkan halaman **Device Not Secure** dan menyediakan tombol untuk menutup aplikasi. Perluas kondisi ini di `SecurityCubit` sesuai kebijakan keamanan aplikasi sebelum production release.
-
-## Konfigurasi environment
-
-Secara default aplikasi memuat `env/.env.dev`. Lokasi file dapat diganti ketika menjalankan aplikasi:
-
-```bash
-flutter run --dart-define=ENV=env/.env.prod
-```
-
-Key environment yang digunakan oleh `AppConfig`:
-
-```env
-APP_NAME=Starterkit MRH
-BASE_URL=http://localhost:8000
-API_KEY=
-ENABLE_LOG=true
-```
-
-Fallback bawaan jika key tidak tersedia:
-
-- `APP_NAME`: `Starterkit MRH`
-- `BASE_URL`: `http://localhost:8000`
-- `API_KEY`: string kosong
-- `ENABLE_LOG`: `false`
-
-Jangan menyimpan secret production di source control. Gunakan file environment lokal atau mekanisme secret pada CI/CD.
-
-## Penyimpanan lokal
-
-`StorageService` menggunakan `FlutterSecureStorage` dan mendukung:
-
-- `write` / `read` untuk string.
-- `writeObject` / `readObject` untuk `Map<String, dynamic>` dalam format JSON.
-- `delete`, `clear`, dan `containsKey`.
-- `getThemeMode` untuk memulihkan tema tersimpan.
-
-Key yang tersedia saat ini:
-
-| Key | Kegunaan |
-| --- | --- |
-| `auth_member` | Data member/auth pengguna. |
-| `auth_token` | Token autentikasi. |
-| `theme_mode` | Preferensi `light` atau `dark`. |
-| `device_id` | UUID perangkat yang dibuat sekali dan digunakan kembali. |
-
-## API client dan device info
-
-`ApiClient` adalah wrapper Dio yang memakai `AppConfig.baseUrl` sebagai base URL. Ia menyediakan method berikut:
-
-- `getForm`, `postForm`, `putForm`, dan `deleteForm` untuk request JSON/form.
-- `postMultipart` untuk pengiriman `FormData`.
-- `downloadFile` untuk mengunduh file ke lokasi yang diberikan.
-- Parameter `authRequired` pada setiap request; bila aktif dan token tersedia, interceptor menambahkan header `Authorization: Bearer <token>`.
-
-Interceptor juga menambahkan metadata perangkat pada setiap request:
-
-```text
-X-Device-Id
-X-Platform
-X-App-Version
-X-Build-Number
-X-OS-Version
-X-Device-Model
-```
-
-`DeviceService` membentuk `DeviceInfoModel` dari `device_info_plus` dan `package_info_plus`. Device ID dibuat sebagai UUID dengan prefix `StarterApp-`, kemudian disimpan dengan key `device_id` sehingga tetap konsisten antar sesi.
-
-Respons non-2xx dipetakan menjadi `BadRequestException` (400), `UnauthorizedException` (401), `ForbiddenException` (403), `NotFoundException` (404), `ServerException` (500), atau `ApiException`. Timeout, koneksi gagal, pembatalan request, dan error jaringan juga dipetakan ke `ApiException` yang mudah ditangani feature layer.
-
-## Menjalankan proyek
-
-### Prasyarat
-
-- Flutter SDK yang kompatibel dengan Dart `^3.12.2`.
-- Perangkat fisik, emulator, simulator, atau browser target yang telah dikonfigurasi.
-
-### Instalasi
-
-```bash
-flutter pub get
-```
-
-### Menjalankan development
-
-```bash
-flutter run
-```
-
-Untuk memilih environment lain:
+Bootstrap memuat `env/.env.dev` secara default. Path alternatif diberikan melalui `--dart-define=ENV`:
 
 ```bash
 flutter run --dart-define=ENV=env/.env.dev
 ```
 
-### Static analysis dan test
+`AppConfig` membaca key berikut:
+
+| Key | Default jika tidak tersedia |
+| --- | --- |
+| `APP_NAME` | `Starterkit MRH` |
+| `BASE_URL` | `http://localhost:8000` |
+| `API_KEY` | string kosong |
+| `ENABLE_LOG` | `false` |
+
+`ApiClient` menambahkan `/api` pada `BASE_URL`. Sesuaikan alamat server dengan target yang digunakan; `localhost` pada emulator/perangkat mengacu pada perangkat itu sendiri, bukan otomatis komputer host. File environment tersedia di `env/`. Hindari memasukkan kredensial atau secret produksi ke version control.
+
+## Jaringan dan penyimpanan
+
+`ApiClient` membungkus Dio dengan timeout, pemetaan error ke `ApiException` dan turunannya, serta helper GET/POST/PUT/DELETE, multipart, dan download. Request menerima `authRequired`; interceptor menambahkan Bearer token jika diminta dan tersedia, serta header metadata perangkat (`X-Device-Id`, platform, versi aplikasi, versi OS, dan model). `API_KEY` tersedia di konfigurasi, tetapi client saat ini tidak memasangnya otomatis sebagai header.
+
+`StorageService` membungkus `FlutterSecureStorage` untuk string dan object JSON. Key yang terdefinisi meliputi `auth_member`, `auth_token`, `theme_mode`, `device_id`, dan `app_locale`. Device ID dibuat dan dipersistenkan oleh `DeviceService`.
+
+## Menyiapkan dan menjalankan
+
+Prasyarat: Flutter SDK yang mendukung batas Dart pada `pubspec.yaml`, serta toolchain platform tujuan.
+
+```bash
+flutter pub get
+flutter run
+```
+
+Target yang didukung mengikuti folder platform di repository: Android, iOS, web, Windows, macOS, dan Linux. Ketersediaan build dan perilaku plugin dapat berbeda per platform; siapkan toolchain dan konfigurasi native/signing sesuai target.
+
+Perintah pemeriksaan dan build yang umum:
 
 ```bash
 flutter analyze
 flutter test
-```
-
-### Build release
-
-```bash
 flutter build apk
 flutter build appbundle
 flutter build ios
 flutter build web
 ```
 
-Gunakan perintah build yang sesuai target platform dan pastikan konfigurasi signing/native project telah disiapkan untuk rilis.
+## Assets
 
-## Assets dan font
+Asset dan font didaftarkan di `pubspec.yaml`. Direktori yang digunakan adalah `assets/images/`, `assets/icons/`, `assets/fonts/`, dan `env/`. Keluarga font OpenSans dideklarasikan dengan file font di `assets/fonts/`. Ikon aplikasi dikonfigurasi menggunakan `assets/images/app_icon.png`.
 
-Folder berikut didaftarkan di `pubspec.yaml`:
+## Pengembangan
 
-```text
-env/
-assets/
-assets/images/
-assets/icons/
-assets/fonts/
-```
+- Definisikan route baru di `lib/app/routes/app_router.dart` dan nama route di `AppRouteName`.
+- Tambahkan service reusable di `core/services/`; jaga logika spesifik produk tetap di modul `features/`.
+- Tambahkan state global hanya jika dipakai lintas aplikasi; state layar/fitur sebaiknya berada dekat dengan fiturnya.
+- Gunakan theme, extension, dan string lokalisasi yang tersedia untuk menjaga UI konsisten.
+- Kode test saat ini berada di `test/`; sesuaikan atau tambahkan pengujian saat mengembangkan fitur.
 
-Tema sudah menggunakan `fontFamily: OpenSans`. Agar font diterapkan dengan benar, daftarkan keluarga `OpenSans` beserta file font-nya pada bagian `fonts:` di `pubspec.yaml` apabila belum dilakukan.
-
-## Konvensi pengembangan
-
-- Daftarkan service singleton atau factory baru di `lib/app/di/injection.dart`.
-- Akses dependency yang sudah terdaftar melalui `sl<T>()`; `ApiClient` sudah memperoleh token dan `DeviceService` melalui DI.
-- Daftarkan BLoC/Cubit yang harus tersedia secara global di `lib/app/providers/app_providers.dart`.
-- Tambahkan route melalui `lib/app/routes/app_router.dart` dan simpan konstanta nama route di `AppRouteName`.
-- Simpan token UI bersama dalam `app/themes`.
-- Letakkan logika reusable lintas feature di `core/`; UI dan use case khusus tetap di `features/`.
-- Gunakan `BaseCubit.safeEmit` untuk Cubit yang meng-emit state asynchronous.
-
-## Dependensi
-
-Dependency lengkap serta versinya ada di [`pubspec.yaml`](pubspec.yaml). Dependensi yang belum terlihat digunakan pada UI saat ini tetap tersedia sebagai bagian dari starterkit, antara lain `cached_network_image`, `flutter_svg`, `shimmer`, `permission_handler`, `package_info_plus`, dan `flutter_local_notifications`.
-
-## Catatan pengembangan
-
-- Delegasi lokalisasi Material/Cupertino sudah disiapkan sebagai komentar di `App`, tetapi belum diaktifkan.
-- `debugShowCheckedModeBanner` mengikuti nilai `ENABLE_LOG`; gunakan `false` pada environment rilis.
-- `debugLogDiagnostics` GoRouter aktif. Pertimbangkan menonaktifkannya pada production.
-- Halaman Login, Sign Up, Maintenance, Home, dan Account saat ini masih berupa placeholder dasar untuk dikembangkan lebih lanjut.
