@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/config/app_config.dart';
 import '../../../../app/routes/app_router.dart';
+import '../../../../core/extensions/localization_extension.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -94,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'Welcome to the App',
+                    context.l10n.splashTagline,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 14.sp),
                   ),

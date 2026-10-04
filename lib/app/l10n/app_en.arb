@@ -1,0 +1,62 @@
+{
+  "@@locale": "en",
+  "appTitle": "Starterkit App",
+  "welcomeUser": "Welcome, {name}!",
+  "@welcomeUser": {
+    "description": "Greeting text with name placeholder",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Murihat"
+      }
+    }
+  },
+  "itemRemaining": "You have {count} pending tasks",
+  "@itemRemaining": {
+    "description": "Task counter placeholder",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "splashTagline": "Your smart companion app",
+  "splashLoading": "Preparing application...",
+  "splashVersion": "Version {version}",
+  "@splashVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.0.0"
+      }
+    }
+  },
+  "homeTitle":"Home",
+  "homeWelcome":"Welcome to the Home Screen!",
+
+  "accountTitle": "Account",
+  "accountGuestUser": "Guest User",
+  "accountGuestUserDesc": "Sign in to access all account features",
+  "accountBtnLogin": "Sign In",
+  "accountBtnRegister": "Register",
+
+  "accountSectionPreferences": "PREFERENCES",
+  "accountThemeDarkMode": "Dark Mode",
+  "accountThemeActive": "Active",
+  "accountThemeInactive": "Inactive",
+  "accountLanguage": "Language",
+  "accountLanguageSelectTitle": "Select Language",
+  "accountLanguageIndonesian": "Indonesian",
+  "accountLanguageEnglish": "English",
+
+  "accountSectionAbout": "ABOUT",
+  "accountAboutHelpCenter": "Help Center & FAQ",
+  "accountAboutPrivacyPolicy": "Privacy Policy",
+  "accountAboutAppVersion": "App Version",
+
+  "accountSectionDevTools": "DEVELOPER TOOLS",
+  "accountDevNotificationSending": "Sending...",
+  "accountDevBtnTestNotification": "Test Local Notification",
+  "accountDevBtnTestImageNotification": "Test Notification With Image"
+}

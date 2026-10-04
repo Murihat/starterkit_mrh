@@ -1,0 +1,57 @@
+{
+  "@@locale": "id",
+  "appTitle": "Aplikasi Starterkit",
+  "welcomeUser": "Selamat datang, {name}!",
+  "@welcomeUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "itemRemaining": "Anda memiliki {count} tugas tertunda",
+  "@itemRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "splashTagline": "Aplikasi pendamping cerdas Anda",
+  "splashLoading": "Menyiapkan aplikasi...",
+  "splashVersion": "Versi {version}",
+  "@splashVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "homeTitle":"Beranda",
+  "homeWelcome":"Selamat Datang di Halaman Beranda!",
+
+  "accountTitle": "Akun",
+  "accountGuestUser": "Pengguna Tamu",
+  "accountGuestUserDesc": "Masuk untuk mengakses semua fitur akun",
+  "accountBtnLogin": "Masuk",
+  "accountBtnRegister": "Daftar",
+
+  "accountSectionPreferences": "PENGATURAN",
+  "accountThemeDarkMode": "Mode Gelap",
+  "accountThemeActive": "Aktif",
+  "accountThemeInactive": "Nonaktif",
+  "accountLanguage": "Bahasa",
+  "accountLanguageSelectTitle": "Pilih Bahasa",
+  "accountLanguageIndonesian": "Bahasa Indonesia",
+  "accountLanguageEnglish": "Bahasa Inggris",
+
+  "accountSectionAbout": "TENTANG",
+  "accountAboutHelpCenter": "Pusat Bantuan & FAQ",
+  "accountAboutPrivacyPolicy": "Kebijakan Privasi",
+  "accountAboutAppVersion": "Versi Aplikasi",
+
+  "accountSectionDevTools": "ALAT PENGEMBANG",
+  "accountDevNotificationSending": "Mengirim...",
+  "accountDevBtnTestNotification": "Uji Notifikasi Lokal",
+  "accountDevBtnTestImageNotification": "Uji Notifikasi Bergambar"
+}
