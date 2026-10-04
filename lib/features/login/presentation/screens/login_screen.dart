@@ -91,10 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: colorScheme.primaryContainer,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
-                      child: Icon(
-                        Icons.lock_person_rounded,
-                        size: 36.sp,
-                        color: colorScheme.onPrimaryContainer,
+                      child: Image.asset(
+                        'assets/images/app_icon.png',
+                        width: 40.w,
+                        height: 40.w,
                       ),
                     ),
                   ),

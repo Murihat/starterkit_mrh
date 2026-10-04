@@ -78,10 +78,10 @@ class _SplashScreenState extends State<SplashScreen>
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(28.r),
                     ),
-                    child: Icon(
-                      Icons.apps_rounded,
-                      size: 48.sp,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                    child: Image.asset(
+                      'assets/images/app_icon.png',
+                      width: 48.w,
+                      height: 48.w,
                     ),
                   ),
                   SizedBox(height: 24.h),
