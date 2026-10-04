@@ -6,6 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class StorageKeys {
   StorageKeys._();
 
+  static const String localeKey = 'app_locale';
+
   static const String member = 'auth_member';
   static const String token = 'auth_token';
   static const String themeMode = 'theme_mode';
@@ -81,5 +83,20 @@ class StorageService {
     final theme = await read(StorageKeys.themeMode);
 
     return theme == 'dark' ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  Future<Locale> getLocale() async {
+    final languageCode = await read(StorageKeys.localeKey);
+
+    if (languageCode == 'en') {
+      return const Locale('en', 'US');
+    }
+
+    // Default ke Bahasa Indonesia
+    return const Locale('id', 'ID');
+  }
+
+  Future<void> setLocale(String languageCode) async {
+    await write(StorageKeys.localeKey, languageCode);
   }
 }

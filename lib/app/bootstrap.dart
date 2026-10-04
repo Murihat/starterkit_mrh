@@ -8,7 +8,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../core/services/local_notification/local_notification_service.dart';
 import '../core/services/logger/logger_service.dart';
-import '../core/services/storage/storage_service.dart';
 import 'di/injection.dart';
 import 'providers/app_providers.dart';
 
@@ -54,15 +53,11 @@ Future<void> bootstrap(Future<Widget> Function() builder) async {
         ),
       ]);
       await initDependencies();
-      final results = await Future.wait([
-        sl<StorageService>().getThemeMode(),
-        sl<LocalNotificationService>().init(),
-      ]);
-      final initialTheme = results[0] as ThemeMode;
+      await sl<LocalNotificationService>().init();
 
       return runApp(
         MultiBlocProvider(
-          providers: AppProviders.providers(initialTheme: initialTheme),
+          providers: AppProviders.providers(),
           child: await builder(),
         ),
       );

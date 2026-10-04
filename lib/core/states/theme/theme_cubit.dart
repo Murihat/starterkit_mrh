@@ -9,12 +9,16 @@ part 'theme_state.dart';
 class ThemeCubit extends BaseCubit<ThemeState> {
   final StorageService storage;
 
-  ThemeCubit({required this.storage, required ThemeMode initialTheme})
+  ThemeCubit({required this.storage, ThemeMode initialTheme = ThemeMode.light})
     : super(ThemeState(themeMode: initialTheme));
+
+  Future<void> loadTheme() async {
+    final themeMode = await storage.getThemeMode();
+    safeEmit(state.copyWith(themeMode: themeMode));
+  }
 
   Future<void> toggleTheme() async {
     final themeMode = state.isDark ? ThemeMode.light : ThemeMode.dark;
-
     await setTheme(themeMode);
   }
 
