@@ -73,12 +73,16 @@ class _ConnectivityScreenState extends State<ConnectivityScreen>
                   const SizedBox(height: 20),
                   Text(
                     'No Internet Connection',
-                    style: context.textTheme.bodyLarge,
+                    style: context.textTheme.bodyLarge!.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Please check your connection',
-                    style: context.textTheme.bodyMedium,
+                    style: context.textTheme.bodyMedium!.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   const _AnimatedDots(),
@@ -126,7 +130,7 @@ class _AnimatedDotsState extends State<_AnimatedDots>
         final value = (_controller.value * 3).floor();
         return Text(
           'Reconnecting${'.' * value}',
-          style: context.textTheme.labelLarge,
+          style: context.textTheme.labelLarge!.copyWith(color: Colors.white),
         );
       },
     );
